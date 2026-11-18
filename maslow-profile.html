@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Профіль потреб за Маслоу · Maslow needs profile</title>
+<style>
+:root{--bg:#f7f9fb;--fg:#14202b;--mut:#5a6672;--line:#d5dce3;--acc:#0f7b8a;--good:#2f8a4b;--low:#c2670a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#10161c;--fg:#e6ebf0;--mut:#9aa6b2;--line:#2c3640;--acc:#4cc2d3;--good:#6fcf8a;--low:#f0b24a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#10161c;--fg:#e6ebf0;--mut:#9aa6b2;--line:#2c3640;--acc:#4cc2d3;--good:#6fcf8a;--low:#f0b24a;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:560px;margin:0 auto;padding:20px 16px 32px}
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.bar{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+h1{font:600 26px/1.2 Georgia,"Times New Roman",serif;margin:0 0 6px}
+.sub{color:var(--mut);margin:0 0 16px;font-size:15px}
+button,select,input[type=text]{font:inherit;font-size:14px;color:var(--fg);background:transparent;border:1px solid var(--line);border-radius:8px;padding:6px 12px}
+button{cursor:pointer}
+button:hover,select:hover{border-color:var(--acc)}
+button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.seg{display:flex;margin:0 0 16px}
+.seg button{flex:1;border-radius:0;border-right-width:0}
+.seg button:first-child{border-radius:8px 0 0 8px}
+.seg button:last-child{border-radius:0 8px 8px 0;border-right-width:1px}
+[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:var(--bg)}
+.warn,.lab{display:none}
+.ana .warn{display:block;font-size:13px;color:var(--mut);border-left:3px solid var(--low);padding-left:10px;margin:0 0 12px}
+.ana .lab{display:block;width:100%;margin:0 0 12px}
+.row{padding:10px 0;border-top:1px solid var(--line)}
+.top{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--acc);flex:none;display:inline-block}
+.dot.g{background:var(--good)}.dot.l{background:var(--low)}
+.lb{flex:1}
+.val{font:600 18px Georgia,serif;min-width:2ch;text-align:right}
+input[type=range]{width:100%;accent-color:var(--acc);margin:0}
+details{margin:6px 0 0}
+summary{cursor:pointer;font-size:13px;color:var(--mut)}
+.it{margin:8px 0}.it p{margin:0 0 4px;font-size:14px}
+.sc{display:flex;gap:4px}.sc button{flex:1;padding:4px 0}
+.an{display:none;gap:8px;margin-top:8px}
+.ana .an{display:flex;flex-wrap:wrap}
+.an input{flex:1;min-width:140px}
+svg{display:block;width:100%;height:auto;margin:16px 0 8px}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:8px 0 20px}
+@media (max-width:440px){.stats{grid-template-columns:1fr}}
+.st{border-top:2px solid var(--acc);padding-top:6px}
+.st span{display:block;font-size:13px;color:var(--mut)}
+.st b{font:600 17px/1.25 Georgia,serif;display:block;overflow-wrap:anywhere}
+h2{font:600 19px Georgia,serif;margin:0 0 4px}
+table{width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 14px}
+th{font:600 13px system-ui,sans-serif;color:var(--mut);text-align:left;padding:6px 8px 6px 0;border-bottom:1px solid var(--line)}
+td{padding:9px 8px 9px 0;border-bottom:1px solid var(--line);vertical-align:top}
+td.n{width:2em;font:600 16px Georgia,serif}
+td small{display:block;color:var(--mut);font-size:13px}
+ul,ol{margin:8px 0 18px;padding-left:20px}
+li{margin:0 0 6px}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.note{font-size:13px;color:var(--mut);margin:18px 0 0}
+</style>
+</head>
+<body>
+<main id="m">
+<header>
+<h1 id="t"></h1>
+<div class="bar"><button id="theme" type="button"></button><button id="lang" type="button"></button></div>
+</header>
+<p class="sub" id="sub"></p>
+<div class="seg"><button id="b1" type="button"></button><button id="b2" type="button"></button></div>
+<p class="warn" id="warn"></p>
+<input class="lab" id="lab" type="text" maxlength="60">
+<section id="rows"></section>
+<svg id="radar" viewBox="-30 0 480 290" role="img"></svg>
+<section class="stats">
+<div class="st"><span id="k1"></span><b id="v1"></b></div>
+<div class="st"><span id="k2"></span><b id="v2"></b></div>
+<div class="st"><span id="k3"></span><b id="v3"></b></div>
+</section>
+<h2 id="ph"></h2>
+<table><thead><tr><th>#</th><th id="th1"></th><th id="th2"></th></tr></thead><tbody id="plan"></tbody></table>
+<ul id="cross"></ul>
+<h2 id="wh"></h2>
+<ol id="wk"></ol>
+<div class="btns"><button id="copy" type="button"></button><button id="reset" type="button"></button></div>
+<p class="note" id="note"></p>
+</main>
+<script>
+var D={
+uk:{t:"Профіль потреб за Маслоу",sub:"Відповідай на міні-тест або рухай повзунки вручну: діаграма, пріоритети й план підлаштовуються. Дані зберігаються лише в браузері.",
+sub2:"Став оцінки за відкритими ознаками; тест підказує бал, а повзунок завжди можна виправити вручну. Усе лишається в браузері.",
+full:["Сон, їжа, спорт","Приватність і безпека","Любов і приналежність","Повага","Самоактуалізація"],
+short:["Фізіологія","Безпека","Приналежність","Повага","Самоактуалізація"],
+k1:"Середнє",k2:"Найсильніший",k3:"Фокус зараз",ph:"План за пріоритетом",th1:"Рівень",th2:"Наступний крок",
+st:["слабке місце","тримається","опора"],wh:"План на 12 тижнів",reset:"Скинути",lang:"English",
+th:["Тема: авто","Тема: світла","Тема: темна"],m1:"Самооцінка",m2:"Аналіз ззовні",
+q:"Міні-тест",sc:["1 — зовсім ні, 5 — цілком так","1 — ознак немає, 5 — чіткі ознаки"],
+cl:"Впевненість",conf:["низька","середня","висока"],ph2:"Тип джерела або доказ (без імен і акаунтів)",lab:"Мітка кейсу (без імен)",
+copy:"Скопіювати підсумок",copied:"Скопійовано",
+warn:"Лише відкриті джерела й законні цілі (дослідження, журналістика, безпека, за згодою). Не вноси імен, адрес чи акаунтів. Непрямі ознаки не доводять стан людини, це робоча нотатка, а не діагноз.",
+aria:"Радарна діаграма п’яти рівнів потреб",
+w1:"Тижні 1–4: ",w2:"Тижні 5–8: ",w2b:"підтримуй усі рівні й повторюй щотижневі кроки.",w3:"Тижні 9–12: повторно оціни всі рівні та обери новий фокус.",
+allgood:"Усі рівні стабільні: підтримуй їх і раз на місяць перевіряй оцінки.",
+x1:"Сильна безпека — опора, але перевір, чи вона не заважає відкритості з людьми: один безпечний крок самоодкриття на тиждень.",
+x2:"Слабка приналежність часто тягне вниз повагу й самоактуалізацію, тому обирай проєкти й заняття, пов’язані зі спільнотою.",
+note:"Це інструмент для самоспостереження та структурування нотаток, а не діагноз. Якщо поганий настрій триває понад два тижні, зверніться до фахівця.",
+items:[["Регулярний режим сну й харчування","Є фізична активність або рух","Базові потреби покриті стабільно"],
+["Контроль приватності й безпечні звички","Стабільні житло, дохід або робота","Відчуття безпеки в повсякденні"],
+["Є близькі люди, на яких можна покластися","Регулярні контакти й спільні заняття","Належність до спільноти або групи"],
+["Визнання з боку інших","Упевненість у власних навичках","Досягнення, якими пишаються"],
+["Проєкти й цілі, що мають сенс","Постійний розвиток і навчання","Діяльність відповідає цінностям"]],
+act:[["Почни з одного: фіксований час підйому, навіть у вихідні.","Додавай рух поступово: орієнтир ВООЗ — 150–300 хвилин на тиждень.","Тримай режим сну й руху, не ускладнюй його."],
+["Зміцни базу: паролі, двофакторна автентифікація, налаштування приватності.","Раз на квартал перевіряй паролі й налаштування приватності.","Підтримуй, але стеж, щоб захист не заважав відкритості."],
+["Один контакт на тиждень: напиши людині, з якою колись було добре.","Знайди місце зі щотижневою зустріччю: гурток, курс, волонтерство.","Бережи регулярність зустрічей і час від часу заглиблюй розмови."],
+["Щовечора 3 рядки: що вдалося і що це каже про твої вміння.","Раз на місяць проси в однієї людини конкретний відгук.","Фіксуй досягнення й не знецінюй їх порівняннями."],
+["Виділи 2 години на тиждень на невеликий проєкт, що має для тебе сенс.","Запиши 3 цінності й одну дію на тиждень для кожної.","Вибери складніший виклик, що розтягує твої навички."]]},
+en:{t:"Maslow needs profile",sub:"Answer the mini-test or move the sliders by hand: the chart, priorities and plan adapt. Your data stays in your browser only.",
+sub2:"Score from open-source indicators; the test suggests a score and the slider can always be overridden by hand. Everything stays in your browser.",
+full:["Sleep, food, sport","Privacy and safety","Love and belonging","Esteem","Self-actualization"],
+short:["Physiology","Safety","Belonging","Esteem","Self-actualization"],
+k1:"Average",k2:"Strongest",k3:"Focus now",ph:"Plan by priority",th1:"Level",th2:"Next step",
+st:["weak spot","holding","strong"],wh:"12-week plan",reset:"Reset",lang:"Українська",
+th:["Theme: auto","Theme: light","Theme: dark"],m1:"Self-assessment",m2:"External analysis",
+q:"Mini-test",sc:["1 = not at all, 5 = fully true","1 = no indicators, 5 = clear indicators"],
+cl:"Confidence",conf:["low","medium","high"],ph2:"Source type or evidence (no names or accounts)",lab:"Case label (no names)",
+copy:"Copy summary",copied:"Copied",
+warn:"Open sources and lawful purposes only (research, journalism, security, with consent). Don’t enter names, addresses or accounts. Indirect indicators don’t prove a person’s state; this is a working note, not a diagnosis.",
+aria:"Radar chart of the five levels of needs",
+w1:"Weeks 1–4: ",w2:"Weeks 5–8: ",w2b:"maintain all levels and repeat the weekly steps.",w3:"Weeks 9–12: re-score all levels and choose a new focus.",
+allgood:"All levels look stable: maintain them and re-check your scores once a month.",
+x1:"Strong safety is an anchor, but check that it doesn’t get in the way of openness with people: one safe step of self-disclosure a week.",
+x2:"Weak belonging often drags down esteem and self-actualization, so choose projects and activities tied to a community.",
+note:"This is a self-reflection and note-structuring tool, not a diagnosis. If a low mood lasts more than two weeks, please talk to a professional.",
+items:[["Regular sleep and eating pattern","Some physical activity or movement","Basic needs reliably covered"],
+["Privacy control and safe habits","Stable housing, income or work","A sense of safety in daily life"],
+["Close people to rely on","Regular contact and shared activities","Belonging to a community or group"],
+["Recognition from others","Confidence in own skills","Achievements they are proud of"],
+["Projects and goals that carry meaning","Ongoing growth and learning","Activity matches their values"]],
+act:[["Start with one thing: a fixed wake-up time, even on days off.","Add movement gradually: the WHO guideline is 150–300 minutes a week.","Keep your sleep and movement routine; don’t overcomplicate it."],
+["Strengthen the base: passwords, two-factor authentication, privacy settings.","Once a quarter, review your passwords and privacy settings.","Maintain it, but make sure the guard doesn’t block openness."],
+["One contact a week: message someone you once got along with.","Find a place with a weekly meeting: a club, a course, volunteering.","Protect the regular meetings and now and then go deeper in conversations."],
+["Every evening, 3 lines: what worked and what it says about your skills.","Once a month, ask one person for specific feedback.","Record achievements and don’t discount them by comparing."],
+["Set aside 2 hours a week for a small project that matters to you.","Write down 3 values and one action a week for each.","Pick a harder challenge that stretches your skills."]]}
+};
+var S={v:[5,5,5,5,5],l:((navigator.language||"en").slice(0,2)==="uk")?"uk":"en",th:0,m:"self",a:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],c:[1,1,1,1,1],n:["","","","",""],lab:""};
+try{var raw=localStorage.getItem("maslow-v2")||localStorage.getItem("maslow-v1");if(raw){var p=JSON.parse(raw);
+if(p&&Array.isArray(p.v)&&p.v.length===5){S.v=p.v.map(function(x){x=Math.round(+x);return(x>=1&&x<=10)?x:5})}
+if(p&&(p.l==="uk"||p.l==="en"))S.l=p.l;
+if(p&&(p.th===0||p.th===1||p.th===2))S.th=p.th;
+if(p&&(p.m==="self"||p.m==="an"))S.m=p.m;
+if(p&&Array.isArray(p.a)&&p.a.length===15)S.a=p.a.map(function(x){x=Math.round(+x);return(x>=0&&x<=5)?x:0});
+if(p&&Array.isArray(p.c)&&p.c.length===5)S.c=p.c.map(function(x){x=Math.round(+x);return(x>=0&&x<=2)?x:1});
+if(p&&Array.isArray(p.n)&&p.n.length===5)S.n=p.n.map(function(x){return String(x||"").slice(0,120)});
+if(p&&typeof p.lab==="string")S.lab=p.lab.slice(0,60)}}catch(e){}
+function save(){try{localStorage.setItem("maslow-v2",JSON.stringify(S))}catch(e){}}
+function mk(t,c){var e=document.createElement(t);if(c)e.className=c;return e}
+function $(id){return document.getElementById(id)}
+function txt(id,s){$(id).textContent=s}
+function fromQ(i){var s=0,c=0;for(var k=0;k<3;k++){var x=S.a[i*3+k];if(x){s+=x;c++}}if(c)S.v[i]=Math.round((s/c-1)/4*9+1)}
+var rows=$("rows"),R=[];
+for(var i=0;i<5;i++){(function(i){
+var r=mk("div","row"),top=mk("div","top"),dot=mk("span","dot"),lb=mk("label","lb"),val=mk("span","val");
+lb.htmlFor="s"+i;top.appendChild(dot);top.appendChild(lb);top.appendChild(val);
+var inp=mk("input");inp.type="range";inp.min=1;inp.max=10;inp.step=1;inp.id="s"+i;inp.value=S.v[i];
+inp.addEventListener("input",function(){S.v[i]=+inp.value;save();render()});
+var det=mk("details"),sm=mk("summary"),its=[];det.appendChild(sm);
+for(var k=0;k<3;k++){(function(k){
+var it=mk("div","it"),pp=mk("p"),sc=mk("div","sc"),bs=[];
+for(var n=1;n<=5;n++){(function(n){var b=mk("button");b.type="button";b.textContent=n;
+b.addEventListener("click",function(){var ix=i*3+k;S.a[ix]=(S.a[ix]===n)?0:n;fromQ(i);save();render()});
+bs.push(b);sc.appendChild(b)})(n)}
+it.appendChild(pp);it.appendChild(sc);det.appendChild(it);its.push({p:pp,bs:bs})})(k)}
+var an=mk("div","an"),cf=mk("select"),no=mk("input");no.type="text";no.maxLength=120;no.value=S.n[i];
+for(var c=0;c<3;c++){var o=mk("option");o.value=c;cf.appendChild(o)}
+cf.addEventListener("change",function(){S.c[i]=+cf.value;save();render()});
+no.addEventListener("input",function(){S.n[i]=no.value;save()});
+an.appendChild(cf);an.appendChild(no);
+r.appendChild(top);r.appendChild(inp);r.appendChild(det);r.appendChild(an);rows.appendChild(r);
+R.push({dot:dot,lb:lb,val:val,inp:inp,sm:sm,its:its,cf:cf,no:no});
+})(i)}
+function pt(i,v,r){var a=(-90+i*72)*Math.PI/180;return[210+r*v/10*Math.cos(a),150+r*v/10*Math.sin(a)]}
+function f(n){return n.toFixed(1)}
+function band(x){return x<=4?0:(x<=6?1:2)}
+function dcls(x){return "dot"+(x>=7?" g":(x<=3?" l":""))}
+function stat(x){return x>=7?2:(x<=3?0:1)}
+function td(tr,cls){var c=mk("td",cls);tr.appendChild(c);return c}
+function li(el,s){var x=mk("li");x.textContent=s;el.appendChild(x)}
+function avgS(){var s=0;for(var i=0;i<5;i++)s+=S.v[i];var a=(s/5).toFixed(1);return S.l==="uk"?a.replace(".",","):a}
+function render(){
+var d=D[S.l],v=S.v,an=(S.m==="an");
+document.documentElement.lang=S.l;
+if(S.th===0)document.documentElement.removeAttribute("data-theme");else document.documentElement.setAttribute("data-theme",S.th===1?"light":"dark");
+$("m").className=an?"ana":"";
+txt("t",d.t);txt("sub",an?d.sub2:d.sub);txt("warn",d.warn);
+txt("b1",d.m1);txt("b2",d.m2);$("b1").setAttribute("aria-pressed",String(!an));$("b2").setAttribute("aria-pressed",String(an));
+$("lab").placeholder=d.lab;
+txt("k1",d.k1);txt("k2",d.k2);txt("k3",d.k3);txt("ph",d.ph);txt("th1",d.th1);txt("th2",d.th2);txt("wh",d.wh);
+txt("reset",d.reset);txt("lang",d.lang);txt("theme",d.th[S.th]);txt("copy",d.copy);txt("note",d.note);
+var mx=0,mn=0;
+for(var i=0;i<5;i++){
+if(v[i]>v[mx])mx=i;if(v[i]<v[mn])mn=i;
+var q=R[i];
+q.lb.textContent=(i+1)+". "+d.full[i];q.val.textContent=v[i];q.inp.value=v[i];q.dot.className=dcls(v[i]);
+q.sm.textContent=d.q+" · "+d.sc[an?1:0];
+for(var k=0;k<3;k++){q.its[k].p.textContent=d.items[i][k];
+for(var n=0;n<5;n++)q.its[k].bs[n].setAttribute("aria-pressed",String(S.a[i*3+k]===n+1))}
+for(var c=0;c<3;c++)q.cf.options[c].textContent=d.cl+": "+d.conf[c];
+q.cf.value=S.c[i];q.no.placeholder=d.ph2;
+}
+txt("v1",avgS()+"/10");txt("v2",d.short[mx]+" "+v[mx]);txt("v3",d.short[mn]+" "+v[mn]);
+var order=[0,1,2,3,4].sort(function(a,b){return v[a]-v[b]||a-b});
+var tb=$("plan");tb.innerHTML="";
+order.forEach(function(i,k){
+var tr=mk("tr");td(tr,"n").textContent=k+1;
+var c=td(tr),dt=mk("span");dt.className=dcls(v[i]);
+var nm=mk("b");nm.textContent=" "+d.short[i];
+var sm=mk("small");sm.textContent=v[i]+"/10 · "+d.st[stat(v[i])]+(an?" · "+d.cl.toLowerCase()+": "+d.conf[S.c[i]]:"");
+c.appendChild(dt);c.appendChild(nm);c.appendChild(sm);
+td(tr).textContent=d.act[i][band(v[i])];tb.appendChild(tr)});
+var cr=$("cross");cr.innerHTML="";
+if(v[1]>=7&&v[2]<=4)li(cr,d.x1);
+if(v[2]<=3&&(v[3]<=6||v[4]<=6))li(cr,d.x2);
+var wk=$("wk");wk.innerHTML="";
+if(v[order[0]]>=7){li(wk,d.allgood)}else{
+li(wk,d.w1+d.short[order[0]]+" ("+v[order[0]]+"/10)");
+li(wk,d.w2+(v[order[1]]>=7?d.w2b:d.short[order[1]]+" ("+v[order[1]]+"/10)"));
+li(wk,d.w3)}
+var s="";
+[2,4,6,8,10].forEach(function(g){var p=[];for(var i=0;i<5;i++)p.push(pt(i,g,90).map(f).join(","));
+s+='<polygon points="'+p.join(" ")+'" style="fill:none;stroke:var(--line);stroke-width:1"/>'});
+for(var i=0;i<5;i++){var e=pt(i,10,90);s+='<line x1="210" y1="150" x2="'+f(e[0])+'" y2="'+f(e[1])+'" style="stroke:var(--line);stroke-width:1"/>'}
+var poly=[];for(var i=0;i<5;i++)poly.push(pt(i,v[i],90).map(f).join(","));
+s+='<polygon points="'+poly.join(" ")+'" style="fill:var(--acc);fill-opacity:.22;stroke:var(--acc);stroke-width:2.5;stroke-linejoin:round"/>';
+for(var i=0;i<5;i++){var qq=pt(i,v[i],90),a=(-90+i*72)*Math.PI/180;
+var col=v[i]>=7?"var(--good)":(v[i]<=3?"var(--low)":"var(--acc)"),op=an?[.45,.75,1][S.c[i]]:1;
+s+='<circle cx="'+f(qq[0])+'" cy="'+f(qq[1])+'" r="5" style="fill:'+col+';opacity:'+op+'"/>';
+s+='<text x="'+f(qq[0]+14*Math.cos(a))+'" y="'+f(qq[1]+14*Math.sin(a)+5)+'" text-anchor="middle" style="fill:var(--fg);font:600 14px system-ui,sans-serif">'+v[i]+'</text>';
+var l=pt(i,10,112),anc=(i===0)?"middle":(i<3?"start":"end"),dy=(i===0)?-4:(i>=2&&i<=3?10:4);
+s+='<text x="'+f(l[0])+'" y="'+f(l[1]+dy)+'" text-anchor="'+anc+'" style="fill:var(--mut);font:14px system-ui,sans-serif">'+d.short[i]+'</text>'}
+var sv=$("radar");sv.innerHTML=s;sv.setAttribute("aria-label",d.aria)}
+function summary(){var d=D[S.l],an=(S.m==="an"),L=[];
+L.push(d.t+(S.lab?" — "+S.lab:"")+" ["+(an?d.m2:d.m1)+"]");
+for(var i=0;i<5;i++){L.push((i+1)+". "+d.full[i]+": "+S.v[i]+"/10 ("+d.st[stat(S.v[i])]+")"+(an?"; "+d.cl.toLowerCase()+": "+d.conf[S.c[i]]+(S.n[i]?"; "+S.n[i]:""):""))}
+L.push(d.k1+": "+avgS()+"/10");L.push(d.note);return L.join("\n")}
+function copyTxt(t,ok){
+function done(){var b=$("copy");b.textContent=ok;setTimeout(render,1500)}
+try{navigator.clipboard.writeText(t).then(done,fb)}catch(e){fb()}
+function fb(){try{var ta=mk("textarea");ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand("copy");document.body.removeChild(ta);done()}catch(e){}}}
+$("lang").addEventListener("click",function(){S.l=(S.l==="uk")?"en":"uk";save();render()});
+$("theme").addEventListener("click",function(){S.th=(S.th+1)%3;save();render()});
+$("b1").addEventListener("click",function(){S.m="self";save();render()});
+$("b2").addEventListener("click",function(){S.m="an";save();render()});
+$("lab").value=S.lab;
+$("lab").addEventListener("input",function(){S.lab=this.value;save()});
+$("copy").addEventListener("click",function(){copyTxt(summary(),D[S.l].copied)});
+$("reset").addEventListener("click",function(){S.v=[5,5,5,5,5];S.a=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];S.c=[1,1,1,1,1];S.n=["","","","",""];S.lab="";for(var i=0;i<5;i++)R[i].no.value="";$("lab").value="";save();render()});
+render();
+</script>
+</body>
+</html>
